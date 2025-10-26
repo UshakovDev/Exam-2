@@ -1,0 +1,46 @@
+# Битрикс - служебные файлы и папки
+/bitrix/backup/
+/bitrix/cache/
+/bitrix/managed_cache/
+/bitrix/stack_cache/
+/bitrix/html_pages/
+/bitrix/tmp/
+/upload/
+
+# PHP
+*.log
+.htaccess
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Vendor (если используются composer пакеты)
+/vendor/
+
+# Node modules (если используется npm/webpack)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build files
+dist/
+build/
+
+# Database
+*.sql
+*.dump
