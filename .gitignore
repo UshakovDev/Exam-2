@@ -1,46 +1,34 @@
-# Битрикс - служебные файлы и папки
-/bitrix/backup/
-/bitrix/cache/
-/bitrix/managed_cache/
-/bitrix/stack_cache/
-/bitrix/html_pages/
-/bitrix/tmp/
-/upload/
-
-# PHP
-*.log
-.htaccess
-.env
-
+### общие исключения
 # IDE
+/ssh
+.ssh/
+/.ssh
+.cache
+/.cache
 .idea/
-.vscode/
-*.swp
-*.swo
-*~
+.vscode-server
+/.vscode-server
+.bash_history
+# VSCode Settings
+/.vscode
 
-# OS
-.DS_Store
-Thumbs.db
-desktop.ini
+# // Bitrix
+/bitrix
+/upload
+/sites
+/markup
+/vendor
+/log
+urlrewrite*
 
-# Backup files
-*.bak
-*.backup
-*.old
+# Deny *.xml in root
+/*.xml
 
-# Vendor (если используются composer пакеты)
-/vendor/
+# // Bitrix
 
-# Node modules (если используется npm/webpack)
-node_modules/
-package-lock.json
-yarn.lock
-
-# Build files
-dist/
-build/
-
-# Database
-*.sql
-*.dump
+*.tar
+*.gz
+*.tgz
+*.zip
+*.pdf
+_not_used__*
