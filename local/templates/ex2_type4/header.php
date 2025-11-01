@@ -141,6 +141,10 @@ IncludeTemplateLangFile(__FILE__);
 						?>
 					</div>
 				</div>
+				
+				<!-- Дополнительно рецензии с левой части страницы -->
+				<?php $APPLICATION->ShowViewContent('first_review'); ?>
+				<!-- Дополнительно рецензии с левой части страницы -->
 
 				<div class="content-block">
 					<div class="content-block-inner">

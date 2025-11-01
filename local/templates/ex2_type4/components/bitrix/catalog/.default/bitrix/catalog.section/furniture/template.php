@@ -46,6 +46,17 @@ foreach($arResult["ITEMS"] as $cell=>$arElement):
 	<div class="catalog-item-desc<?=$width < 300 ? '-float' : ''?>">
 		<?=$arElement["PREVIEW_TEXT"]?>
 	</div>
+	
+	<!-- Рецензии с низу товара -->
+	<? if (!empty($arResult['REVIEWS'][$arElement['ID']])): ?>
+		<div style="margin-top: 30px;">
+			<div><?=GetMessage('EX2_REVIEWS_TITLE')?>:</div>
+			<? foreach ($arResult['REVIEWS'][$arElement['ID']] as $reviewTitle): ?>
+				<div><?=$reviewTitle?></div>
+			<? endforeach; ?>
+		</div>
+	<? endif; ?>
+	<!-- Рецензии с низу товара -->
 
 <?
 	foreach($arElement["PRICES"] as $code=>$arPrice):
