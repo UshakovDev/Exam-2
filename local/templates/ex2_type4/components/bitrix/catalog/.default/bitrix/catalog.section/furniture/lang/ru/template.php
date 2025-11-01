@@ -9,4 +9,7 @@ $MESS ['CATALOG_QUANTITY_FROM'] = "От #FROM#";
 $MESS ['CATALOG_QUANTITY_TO'] = "До #TO#";
 $MESS ['CT_BCS_QUANTITY'] = "Количество";
 $MESS ['CATALOG_ELEMENT_DELETE_CONFIRM'] = 'Вы уверены, что хотите удалить этот товар?';
+
+// Заголовок для рецензий с низу товара
+$MESS ['EX2_REVIEWS_TITLE'] = 'Рецензии';
 ?>
