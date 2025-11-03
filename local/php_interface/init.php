@@ -11,3 +11,17 @@ if (!defined('REVIEWS_GROUP_ID')) {
 }
 
 
+$handlersFile = __DIR__ . '/include/ex2_event_handlers.php';
+if (is_file($handlersFile)) {
+    require_once $handlersFile; // Подключаем класс обработчиков
+
+    $eventManager = \Bitrix\Main\EventManager::getInstance();
+    // Проверка анонса при создании рецензии
+    $eventManager->addEventHandler('iblock', 'OnBeforeIBlockElementAdd', ['Ex2ReviewsHandlers', 'onBeforeIBlockElementAdd']);
+    // Проверка анонса + фиксация старого автора перед обновлением
+    $eventManager->addEventHandler('iblock', 'OnBeforeIBlockElementUpdate', ['Ex2ReviewsHandlers', 'onBeforeIBlockElementUpdate']);
+    // Логирование смены автора после успешного обновления
+    $eventManager->addEventHandler('iblock', 'OnAfterIBlockElementUpdate', ['Ex2ReviewsHandlers', 'onAfterIBlockElementUpdate']);
+}
+
+
