@@ -10,6 +10,10 @@ if (!defined('REVIEWS_GROUP_ID')) {
     define('REVIEWS_GROUP_ID', 6); // Группа «Авторы рецензий»
 }
 
+// Файл для AddMessage2Log (использовать для логирования)
+// if (!defined('LOG_FILENAME')) {
+//     define('LOG_FILENAME', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/debug.log');
+// }
 
 $handlersFile = __DIR__ . '/include/ex2_event_handlers.php';
 if (is_file($handlersFile)) {
@@ -24,4 +28,19 @@ if (is_file($handlersFile)) {
     $eventManager->addEventHandler('iblock', 'OnAfterIBlockElementUpdate', ['Ex2ReviewsHandlers', 'onAfterIBlockElementUpdate']);
 }
 
+$userHandlers = __DIR__ . '/include/ex2_user_handlers.php';
+if (is_file($userHandlers)) {
+    require_once $userHandlers; // Подключаем класс обработчиков
+    
+    // Получаем экземпляр EventManager для регистрации обработчиков
+    $eventManager = \Bitrix\Main\EventManager::getInstance();
+    
+    // Регистрируем обработчик OnBeforeUserUpdate модуля 'main'
+    // Выполняется ПЕРЕД обновлением пользователя: сохраняет текущий класс в буфер
+    $eventManager->addEventHandler('main', 'OnBeforeUserUpdate', ['Ex2UserHandlers', 'onBeforeUserUpdate']);
+    
+    // Регистрируем обработчик OnAfterUserUpdate модуля 'main'
+    // Выполняется ПОСЛЕ успешного обновления: сравнивает классы и отправляет письмо
+    $eventManager->addEventHandler('main', 'OnAfterUserUpdate', ['Ex2UserHandlers', 'onAfterUserUpdate']);
+}
 
