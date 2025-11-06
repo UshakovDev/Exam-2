@@ -44,3 +44,8 @@ if (is_file($userHandlers)) {
     $eventManager->addEventHandler('main', 'OnAfterUserUpdate', ['Ex2UserHandlers', 'onAfterUserUpdate']);
 }
 
+// [ex2-610] Регистрация агента для проверки рецензий (интервал 86400 секунд - раз в сутки)
+$agentsFile = __DIR__ . '/include/ex2_agents.php';
+if (is_file($agentsFile)) {
+    require_once $agentsFile; // Подключаем функции агентов
+}
