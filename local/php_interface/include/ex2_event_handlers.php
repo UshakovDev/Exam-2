@@ -174,3 +174,42 @@ class Ex2ReviewsHandlers
 }
 
 
+// [ex2-620] Перед отправкой письма USER_INFO подставляем текстовый «класс пользователя»
+AddEventHandler('main', 'OnBeforeEventAdd', static function (&$event, &$lid, array &$fields) {
+    // Нас интересует только событие USER_INFO, остальные письма не трогаем
+    if ($event !== 'USER_INFO') {
+        return true;
+    }
+
+    // Чтобы обратиться к пользователю, нужен его ID в полях события
+    $userId = (int)($fields['USER_ID'] ?? 0);
+    if ($userId <= 0) {
+        return true;
+    }
+
+    // Получаем данные пользователя (в том числе пользовательское поле UF_USER_CLASS)
+    $user = CUser::GetByID($userId)->Fetch();
+    if (!$user) {
+        return true;
+    }
+
+    // Если класс не задан - подставляем фразу «класс не указан»
+    $classId = $user['UF_USER_CLASS'] ?? null;
+    if (!$classId) {
+        $fields['CLASS'] = Loc::getMessage('EX2_620_CLASS_EMPTY');
+        return true;
+    }
+
+    // Если класс задан, из справочника (CUserFieldEnum) берём текстовое значение
+    $enum = CUserFieldEnum::GetList([], ['ID' => $classId])->Fetch();
+    $fields['CLASS'] = $enum ? (string)$enum['VALUE'] : Loc::getMessage('EX2_620_CLASS_EMPTY');
+
+    // Временное логирование для проверки
+    // if (function_exists('AddMessage2Log')) {
+    //     AddMessage2Log('USER_INFO CLASS=' . $fields['CLASS'], 'ex2_620');
+    // }
+
+    return true;
+});
+
+
