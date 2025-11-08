@@ -213,3 +213,32 @@ AddEventHandler('main', 'OnBeforeEventAdd', static function (&$event, &$lid, arr
 });
 
 
+// [ex2-630] При индексации рецензий добавляем к заголовку класс автора
+AddEventHandler('search', 'BeforeIndex', static function (array $fields) {
+    // Нас интересуют только элементы инфоблока «Рецензии»
+    if ($fields['MODULE_ID'] !== 'iblock' || (int)$fields['PARAM2'] !== IBLOCK_REVIEWS_ID || !CModule::IncludeModule('iblock')) {
+        return $fields;
+    }
+
+    // Достаём автора рецензии из свойства AUTHOR
+    $author = CIBlockElement::GetProperty($fields['PARAM2'], $fields['ITEM_ID'], [], ['CODE' => 'AUTHOR'])->Fetch();
+    $authorId = (int)($author['VALUE'] ?? 0);
+    if ($authorId <= 0) {
+        return $fields;
+    }
+
+    // Загружаем пользователя и проверяем, что у него заполнено поле UF_USER_CLASS
+    $user = CUser::GetByID($authorId)->Fetch();
+    if (!$user || empty($user['UF_USER_CLASS'])) {
+        return $fields;
+    }
+
+    // Получаем текстовое значение класса из перечисления
+    $enum = CUserFieldEnum::GetList([], ['ID' => $user['UF_USER_CLASS']])->Fetch();
+    if ($enum && $enum['VALUE'] !== '') {
+        // Добавляем класс автора в конец заголовка - он попадёт в поисковый индекс
+        $fields['TITLE'] .= ' ' . Loc::getMessage('EX2_630_CLASS_TITLE', ['#CLASS#' => $enum['VALUE']]);
+    }
+
+    return $fields;
+});
