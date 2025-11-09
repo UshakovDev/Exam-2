@@ -9,6 +9,9 @@ if (!defined('UF_AUTHOR_STATUS_PUBLISH_ID')) {
 if (!defined('REVIEWS_GROUP_ID')) {
     define('REVIEWS_GROUP_ID', 6); // Группа «Авторы рецензий»
 }
+if (!defined('CONTENT_EDITORS_GROUP_ID')) {
+    define('CONTENT_EDITORS_GROUP_ID', 5); // Группа «Контент-редакторы»
+}
 
 // Файл для AddMessage2Log (использовать для логирования)
 // if (!defined('LOG_FILENAME')) {
@@ -48,4 +51,12 @@ if (is_file($userHandlers)) {
 $agentsFile = __DIR__ . '/include/ex2_agents.php';
 if (is_file($agentsFile)) {
     require_once $agentsFile; // Подключаем функции агентов
+}
+
+// [ex2-190] Изменить административную часть сайта
+$adminMenuFile = __DIR__ . '/include/ex2_admin_menu.php';
+if (is_file($adminMenuFile)) {
+    require_once $adminMenuFile;
+    // не используем $eventManager-> так как OnBuildGlobalMenu живёт только в старом API, поэтому с ним используется глобальная функция AddEventHandler
+    AddEventHandler('main', 'OnBuildGlobalMenu', ['Ex2AdminMenu', 'onBuildGlobalMenu']);
 }
