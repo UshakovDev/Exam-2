@@ -31,7 +31,7 @@ if (is_file($handlersFile)) {
     $eventManager->addEventHandler('iblock', 'OnAfterIBlockElementUpdate', ['Ex2ReviewsHandlers', 'onAfterIBlockElementUpdate']);
 }
 
-$userHandlers = __DIR__ . '/include/ex2_user_handlers.php';
+$userHandlers = __DIR__ . '/include/ex2_user_handlers601.php'; //[ex2-601] Работа с авторами
 if (is_file($userHandlers)) {
     require_once $userHandlers; // Подключаем класс обработчиков
     
