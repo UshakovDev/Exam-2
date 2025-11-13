@@ -213,7 +213,7 @@ AddEventHandler('main', 'OnBeforeEventAdd', static function (&$event, &$lid, arr
 });
 
 
-// [ex2-630] При индексации рецензий добавляем к заголовку класс автора
+// [ex2-631] При индексации рецензий добавляем к заголовку логин автора
 AddEventHandler('search', 'BeforeIndex', static function (array $fields) {
     // Нас интересуют только элементы инфоблока «Рецензии»
     if ($fields['MODULE_ID'] !== 'iblock' || (int)$fields['PARAM2'] !== IBLOCK_REVIEWS_ID || !CModule::IncludeModule('iblock')) {
@@ -227,18 +227,14 @@ AddEventHandler('search', 'BeforeIndex', static function (array $fields) {
         return $fields;
     }
 
-    // Загружаем пользователя и проверяем, что у него заполнено поле UF_USER_CLASS
+    // Загружаем пользователя и проверяем, что у него есть логин
     $user = CUser::GetByID($authorId)->Fetch();
-    if (!$user || empty($user['UF_USER_CLASS'])) {
+    if (!$user || trim((string)$user['LOGIN']) === '') {
         return $fields;
     }
 
-    // Получаем текстовое значение класса из перечисления
-    $enum = CUserFieldEnum::GetList([], ['ID' => $user['UF_USER_CLASS']])->Fetch();
-    if ($enum && $enum['VALUE'] !== '') {
-        // Добавляем класс автора в конец заголовка - он попадёт в поисковый индекс
-        $fields['TITLE'] .= ' ' . Loc::getMessage('EX2_630_CLASS_TITLE', ['#CLASS#' => $enum['VALUE']]);
-    }
+    // Добавляем логин автора в конец заголовка - он попадёт в поисковый индекс
+    $fields['TITLE'] .= ' ' . Loc::getMessage('EX2_631_LOGIN_TITLE', ['#LOGIN#' => $user['LOGIN']]);
 
     return $fields;
 });
